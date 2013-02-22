@@ -2,7 +2,9 @@ var app = require('express')()
 , server = require('http').createServer(app)
 , io = require('socket.io').listen(server);
 
-server.listen(80);
+var port = process.env.PORT || 5000;
+
+server.listen(port);
 
 app.get('/', function (req, res) {
     res.send('Hello World!');

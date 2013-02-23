@@ -1,13 +1,12 @@
-var app = require('express')()
-, server = require('http').createServer(app)
-, io = require('socket.io').listen(server);
+var app = require('express').createServer()
+, io = require('socket.io').listen(app);
 
 var port = process.env.PORT || 5000;
 
-server.listen(port);
+app.listen(port);
 
 app.get('/', function (req, res) {
-    res.send('Hello World!');
+    res.sendfile('index.html');
 });
 
 io.sockets.on('connection', function (socket) {

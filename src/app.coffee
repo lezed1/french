@@ -9,7 +9,7 @@ app.get '/', (req,res) ->
         res.sendfile 'index.html'
 
 io.sockets.on 'connection', (socket) ->
-        ip = socket.handshake.address.address
+        ip = socket.handshake.remoteAddress
         console.log ip
         data = {ip: ip}
         socket.emit 'news', data

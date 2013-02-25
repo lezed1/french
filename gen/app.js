@@ -16,8 +16,7 @@
 
   io.sockets.on('connection', function(socket) {
     var data, ip;
-    ip = socket.handshake.remoteAddress;
-    console.log(ip);
+    ip = socket.handshake;
     data = {
       ip: ip
     };

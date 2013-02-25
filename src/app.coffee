@@ -9,7 +9,7 @@ app.get '/', (req,res) ->
         res.sendfile 'index.html'
 
 io.sockets.on 'connection', (socket) ->
-        ip = socket.handshake
+        ip = socket.handshake.headers["x-forwarded-for"]
         data = {ip: ip}
         socket.emit 'news', data
         socket.broadcast.emit 'news', data

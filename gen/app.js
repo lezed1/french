@@ -16,7 +16,7 @@
 
   io.sockets.on('connection', function(socket) {
     var data, ip;
-    ip = socket.handshake;
+    ip = socket.handshake.headers["x-forwarded-for"];
     data = {
       ip: ip
     };

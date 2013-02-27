@@ -4,7 +4,8 @@
   "dependencies": {
     "express": "2.5.x",
     "socket.io": "latest",
-    "coffee-script": "1.4.x"
+    "coffee-script": "1.4.x",
+    "jade": "0.28.x"
   },
   "engines": {
     "node": "0.8.x",

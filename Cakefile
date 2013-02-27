@@ -3,6 +3,26 @@ path = require 'path'
 
 option '-b', '--build', 'build the project before run'
 
+dir =
+    gen:
+        client: 'client/gen'
+        server: 'server/gen'
+    assets:
+        src: 'client/src/assets/'
+        gen: 'client/gen/assets/'
+    scripts:
+        src: 'client/src/scripts/'
+        gen: 'client/gen/scripts/'
+    server_scripts:
+        src: 'server/src/scripts/'
+        gen: 'server/gen/scripts/'
+    server:
+        src: 'server/src/'
+        gen: 'server/gen/'
+    views:
+        src: 'server/src/views/'
+        gen: 'server/gen/views/'
+
 colors =
     black : '\x1B[0;30m'
     red : '\x1B[0;31m'
@@ -66,7 +86,7 @@ onError = (err)->
     process.exit -1
 
 run = () ->
-    process = spawn 'node', ['gen/app.js']
+    process = spawn 'node', ['server/gen/app.js']
     process.stdout.setEncoding('utf8')
     process.stdout.on 'data', (data) ->
         console.log data
@@ -84,12 +104,16 @@ clean = (callback) ->
 build = (callback) ->
 
     clean () ->
-        # create gen directory
-        exec "mkdir -p '#{'gen'}'", (err) ->
-            onError err 
-
-            # generate  javascript
-            exec "#{module.coffee} 'gen' 'src'", (err, stdout, stderr) ->
+        # generate server javascript
+        exec "#{module.coffee} '#{path.dirname dir.server_scripts.gen}' '#{path.dirname dir.server_scripts.src}'", (err, stdout, stderr) ->
+            onError err
+            log.print log.COMPILE, dir.server.gen
+        
+            # create views directory
+            exec "mkdir -p '#{dir.views.gen}'", (err) ->
+                onError err
+                exec "rsync -av '#{dir.views.src}' '#{dir.views.gen}'", (err) ->
                     onError err
-                    log.print log.COMPILE, 'gen/'
+                    log.print log.CREATE, dir.views.gen
+
                     callback()

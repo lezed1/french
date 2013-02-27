@@ -1,33 +1,32 @@
-express = require('express')
-app = express.createServer()
-io  = require('socket.io').listen app
+#Module dependencies.
 
-port = process.env.PORT || 5000
+express = require 'express'
+routes = require './routes'
+user = require './routes/user'
+http = require 'http'
+path = require 'path'
 
-# configuration
+app = express()
 
 app.configure ->
-    app.set 'views', __dirname + '/views'
-    app.set 'view engine', 'jade'
+  app.set 'port', process.env.PORT || 3000
+  app.set 'views', __dirname + '/views'
+  app.set 'view engine', 'ejs'
+  app.use express.favicon()
+  app.use express.logger('dev')
+  app.use express.bodyParser()
+  app.use express.methodOverride()
+  app.use express.cookieParser('1dezel')
+  app.use express.session()
+  app.use app.router
+  app.use require('stylus').middleware(__dirname + '/public')
+  app.use express.static(path.join(__dirname, 'public'))
 
 app.configure 'development', ->
-    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }))
+  app.use express.errorHandler()
 
 
-app.listen port
+app.get '/', routes.index
 
-app.get '/', (req,res) ->
-        res.render 'layout', {pageTitle: 'Realtime Messaging Test!'}
-
-app.get '/old', (req,res) ->
-        res.sendFile 'server/gen/views/client.html'
-
-io.sockets.on 'connection', (socket) ->
-        ip = socket.handshake.headers["x-forwarded-for"] || socket.handshake.address.address
-        data = {ip: ip}
-        socket.emit 'news', data
-        socket.broadcast.emit 'news', data
-
-io.configure () ->
-        io.set "transports", ["xhr-polling"]
-        io.set "polling duration", 10
+http.createServer(app).listen(app.get('port'), ->
+  console.log "Express server listening on port " + app.get('port')

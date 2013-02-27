@@ -1,0 +1,17 @@
+doctype 5
+html(lang="en")
+  head
+    title #{pageTitle}
+    
+  body
+    h1 #{pageTitle}
+    #text
+    script(type='text/javascript')
+      var text = '';
+      var socket = io.connect(document.domain);
+      socket.on('news', function (data) {
+        console.log(data);
+        text += JSON.stringify(data)+'<br/>';
+        document.getElementById('text').innerHTML = text
+      socket.emit('my other event', { my: 'data' });
+      });

@@ -2,4 +2,4 @@
 
 
 exports.index = (req, res) ->
-  res.render 'home', { title: 'Express' }
+  res.render 'home', { pageTitle: 'Realtime Messaging Test' }

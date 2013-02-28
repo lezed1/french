@@ -6,7 +6,8 @@
     "socket.io": "latest",
     "coffee-script": "1.4.x",
     "jade": "0.28.x",
-    "stylus": "0.32.x"
+    "stylus": "0.32.x",
+    "stitch": "0.3.x"
   },
   "engines": {
     "node": "0.8.x",

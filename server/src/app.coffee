@@ -5,6 +5,10 @@ routes = require './routes'
 http = require 'http'
 path = require 'path'
 sockets = require './scripts/sockets'
+stitch = require 'stitch'
+
+stitch_scr_path = __dirname + "/../../client/gen/"
+stitch_package = stitch.createPackage paths:[stitch_scr_path]
 
 app = express()
 
@@ -19,8 +23,9 @@ app.configure ->
   app.use express.cookieParser('1dezel')
   app.use express.session()
   app.use app.router
-  app.use require('stylus').middleware(__dirname + '/public')
-  app.use express.static(path.join(__dirname, 'public'))
+  app.use require('stylus').middleware(__dirname + '/../../client/gen') #STYLERSHEETS AREN'T HERE
+  app.use express.static(path.join(__dirname, '/../../client/gen'))
+  app.get '/application.js', stitch_package.createServer()
 
 app.configure 'development', ->
   app.use express.errorHandler()

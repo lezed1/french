@@ -112,8 +112,13 @@ build = (callback) ->
             # create views directory
             exec "mkdir -p '#{dir.views.gen}'", (err) ->
                 onError err
+                
                 exec "rsync -av '#{dir.views.src}' '#{dir.views.gen}'", (err) ->
                     onError err
                     log.print log.CREATE, dir.views.gen
 
-                    callback()
+                    exec "#{module.coffee} '#{path.dirname dir.scripts.gen}' '#{path.dirname dir.scripts.src}'", (err, stdout, stderr) ->
+                        onError err
+                        log.print log.COMPILE, dir.scripts.gen
+                        
+                        callback()

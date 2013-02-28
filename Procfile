@@ -1,1 +1,1 @@
-web: node server/gen/app.js
+web: cake -b run

@@ -1,9 +1,11 @@
-pageTitle = 'Realtime Messaging Test!'
-
 doctype 5
 html(lang="en")
   head
-    title= pageTitle
+    title #{pageTitle}
+    script(src="/socket.io/socket.io.js")
+  body
+    h1 #{pageTitle}
+    #text
     script(type='text/javascript')
       var text = '';
       var socket = io.connect(document.domain);
@@ -13,5 +15,3 @@ html(lang="en")
         document.getElementById('text').innerHTML = text
       socket.emit('my other event', { my: 'data' });
       });
-  body
-    h1 pageTitle

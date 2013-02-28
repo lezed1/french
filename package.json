@@ -1,11 +1,12 @@
 {
-  "name": "node-example",
-  "version": "0.0.1",
+  "name": "lezed1-french",
+  "version": "0.0.2",
   "dependencies": {
-    "express": "2.5.x",
+    "express": "3.x",
     "socket.io": "latest",
     "coffee-script": "1.4.x",
-    "jade": "0.28.x"
+    "jade": "0.28.x",
+    "stylus": "0.32.x"
   },
   "engines": {
     "node": "0.8.x",

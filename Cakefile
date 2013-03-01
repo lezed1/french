@@ -10,6 +10,13 @@ dir =
     assets:
         src: 'client/src/assets/'
         gen: 'client/gen/assets/'
+    lib:
+        src: 'client/src/assets/lib/'
+        gen: 'client/gen/assets/lib/'
+    stylesheets:
+        name: 'stylesheets'
+        src: 'client/src/assets/stylesheets'
+        gen: 'client/gen/assets/stylesheets'
     scripts:
         src: 'client/src/scripts/'
         gen: 'client/gen/scripts/'
@@ -121,4 +128,19 @@ build = (callback) ->
                         onError err
                         log.print log.COMPILE, dir.scripts.gen
                         
-                        callback()
+                        # create assets directory
+                        exec "mkdir -p '#{dir.assets.gen}'", (err) ->
+                            onError err
+                            log.print log.CREATE, dir.assets.gen
+
+                            # copy assets (excluding stylesheets)
+                            exec "rsync -av --exclude='#{dir.stylesheets.name}' '#{dir.assets.src}' '#{dir.assets.gen}'", (err) ->
+                                onError err
+                                log.print log.CREATE, dir.assets.gen
+
+                                # create scripts directory
+                                exec "cp -r '#{dir.lib.src}' '#{dir.lib.gen}'", (err) ->
+                                    onError err
+                                    log.print log.COPY, dir.lib.gen
+
+                                    callback()

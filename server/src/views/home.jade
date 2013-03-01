@@ -3,8 +3,12 @@ html(lang="en")
   head
     title #{pageTitle}!!!
     script(src="/socket.io/socket.io.js")
-    script(src="/application.js")
+    script(src="/assets/lib/jquery-1.9.1.min.js")
+    script(type="text/javascript")
+      $.get('client.js')
   body
     h1 #{pageTitle}
-    #text
+    #output 
+      b Messages:
+      p#text
     
